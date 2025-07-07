@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.preprocessing import LabelEncoder
 from collections import defaultdict
 from typing import Dict, Set, Tuple, List, Any
 
@@ -21,6 +22,12 @@ def create_leave_one_out_split(data: Dict[int, Set[int]]) -> Tuple[defaultdict[i
 
 def txt2dict(file_path:str) ->  Dict[int, Set[int]]:
     df = pd.read_csv(file_path)
+
+    user_le = LabelEncoder()
+    item_le = LabelEncoder()
+
+    df["user_id"] = le.fit_transform(df["user_id"].values)
+    df["item_id"] = le.fit_transform(df["item_id"].values)
 
     user_num, item_num = df["user_id"].max() + 1, df["item_idf"].max() + 1
 
