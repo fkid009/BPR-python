@@ -1,7 +1,7 @@
 import os
 import argparse
 
-from utils import txt2dict
+from utils import create_leave_one_out_split, txt2dict
 from path import Path
 from model import BPR_MF
 
@@ -33,6 +33,8 @@ if __name__ == "__main__":
     try:
         data, user_num, item_num = txt2dict(file_path)
 
+        train_dict, test_dict = create_leave_one_out_split(data)
+
         print(f"Successfully loaded data from '{file_name}' using load_interactions_to_dict.")
         print(f"Inferred number of users: {user_num}")
         print(f"Inferred number of items: {item_num}")
@@ -45,8 +47,7 @@ if __name__ == "__main__":
         print(f"An error occurred while loading or processing data: {e}")
         exit()
 
-    # Initialize BPR_MF model with inferred or explicitly passed dimensions
-    # Using inferred_num_users and inferred_num_items is crucial for correct array sizing
+    # --- Model Initializing ---
     model = BPR_MF(
         num_users = user_num,
         num_items = item_num,
@@ -55,9 +56,8 @@ if __name__ == "__main__":
         learning_rate = args.learning_rate
     )
 
-    # Set training and test data
-    model.set_train_data(user_train_dict)
-    model.set_test_data(user_test_dict)
+    model.set_train_data(train_dict)
+    model.set_test_data(test_dict)
 
     # --- Model Training ---
     print("\nStarting BPR-MF model training...")
