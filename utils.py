@@ -26,8 +26,8 @@ def txt2dict(file_path:str) ->  Dict[int, Set[int]]:
     user_le = LabelEncoder()
     item_le = LabelEncoder()
 
-    df["user_id"] = le.fit_transform(df["user_id"].values)
-    df["item_id"] = le.fit_transform(df["item_id"].values)
+    df["user_id"] = user_le.fit_transform(df["user_id"].values)
+    df["item_id"] = item_le.fit_transform(df["item_id"].values)
 
     user_num, item_num = df["user_id"].max() + 1, df["item_idf"].max() + 1
 
